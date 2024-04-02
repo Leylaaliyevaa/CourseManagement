@@ -14,6 +14,7 @@ public class MySecPaths {
 
             "/auth/**",
             "/teacher/register",
+            "/teacher/subjects/{subject}",
 
     };
 

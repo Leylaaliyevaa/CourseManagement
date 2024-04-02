@@ -1,6 +1,7 @@
 package com.example.teacherstudentmanagement.mapper;
 
 import com.example.teacherstudentmanagement.dto.request.TeacherRequestDto;
+import com.example.teacherstudentmanagement.dto.response.TeacherDTO;
 import com.example.teacherstudentmanagement.entity.Teacher;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,5 +21,9 @@ public interface TeacherMapper {
     @Mapping(source = "address", target = "user.address")
     @Mapping(source = "gender", target = "user.gender")
     Teacher toEntity(TeacherRequestDto teacherRequestDto);
+
+    @Mapping(source = "user.name", target = "name")
+    @Mapping(source = "user.surname", target = "surname")
+    TeacherDTO toDTO(Teacher teacher);
 
 }

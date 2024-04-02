@@ -1,13 +1,16 @@
 package com.example.teacherstudentmanagement.service.impl;
 
 import com.example.teacherstudentmanagement.dto.request.TeacherRequestDto;
+import com.example.teacherstudentmanagement.dto.response.TeacherDTO;
 import com.example.teacherstudentmanagement.entity.Authority;
 import com.example.teacherstudentmanagement.entity.Teacher;
 import com.example.teacherstudentmanagement.entity.Users;
 import com.example.teacherstudentmanagement.enums.AuthorityEnum;
+import com.example.teacherstudentmanagement.enums.Subjects;
 import com.example.teacherstudentmanagement.exception.AlreadyExistException;
 import com.example.teacherstudentmanagement.mapper.TeacherMapper;
 import com.example.teacherstudentmanagement.mapper.UsersMapper;
+import com.example.teacherstudentmanagement.repository.RatingRepository;
 import com.example.teacherstudentmanagement.repository.TeacherRepository;
 import com.example.teacherstudentmanagement.repository.UsersRepository;
 import com.example.teacherstudentmanagement.service.TeacherService;
@@ -17,9 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -30,6 +31,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final TeacherRepository teacherRepository;
+    private final RatingRepository ratingRepository;
 
     @Override
     @Transactional
@@ -52,5 +54,22 @@ public class TeacherServiceImpl implements TeacherService {
         teacherRepository.save(teacher);
         log.info("teacher register method done by {}", user.getUsername());
     }
+
+    @Override
+    public List<TeacherDTO> showTeacherBySubjects(Subjects subject) {
+         List<Teacher> teacher = teacherRepository.findBySubjects(subject);
+
+        List<TeacherDTO> teacherDTOS = new ArrayList<>();
+        for (Teacher t : teacher) {
+            TeacherDTO teacherDTO = teacherMapper.toDTO(t);
+            Double rating = ratingRepository.findAverageRatingByTeacherId(t.getId());
+            teacherDTO.setRating(rating);
+            teacherDTOS.add(teacherDTO);
+        }
+
+        log.info("Found {} teachers with a subject {}", teacher.size(), subject);
+        return teacherDTOS;
+    }
+
 
 }

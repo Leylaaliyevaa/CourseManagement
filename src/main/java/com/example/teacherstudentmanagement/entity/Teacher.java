@@ -1,15 +1,16 @@
 package com.example.teacherstudentmanagement.entity;
 
 import com.example.teacherstudentmanagement.enums.Subjects;
-import lombok.Data;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 
 @Data
 @Entity
 @Table
+@JsonIgnoreProperties("group")
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
