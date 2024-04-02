@@ -16,6 +16,14 @@ public class Payment {
     private Long id;
     private Long price;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "stduent_id")
+    private Student student;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_id")
+    private Group group;
+
     @Enumerated(EnumType.STRING)
     private PaymentMethods paymentMethods;
 

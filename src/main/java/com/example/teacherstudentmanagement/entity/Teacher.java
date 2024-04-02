@@ -5,6 +5,8 @@ import lombok.Data;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table
@@ -13,15 +15,14 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "teacher")
-    private Group group;
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private List<Group> group;
 
     @Enumerated(EnumType.STRING)
     private Subjects subjects;
-    private String username;
-    private Long rating;
+    private Double rating;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users user;
 }

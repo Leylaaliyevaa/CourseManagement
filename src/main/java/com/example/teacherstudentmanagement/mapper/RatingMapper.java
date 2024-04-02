@@ -1,4 +1,7 @@
 package com.example.teacherstudentmanagement.mapper;
 
-public interface RatingMapper {
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring")
+public interface  RatingMapper {
 }

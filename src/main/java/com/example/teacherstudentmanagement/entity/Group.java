@@ -20,7 +20,7 @@ public class Group {
 
     private Long studentsNumber;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 

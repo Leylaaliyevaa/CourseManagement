@@ -4,7 +4,10 @@ import com.example.teacherstudentmanagement.enums.StudentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -14,23 +17,21 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Payment> payment;
 
-    @ManyToOne
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Group> groups;
 
-    private Long remainingLessons;
-    private Date startDate;
-    private Date endDate;
+    private Integer remainingLessons;
+    private LocalDateTime startDate;
+    //private Date endDate;
 
     @Enumerated(EnumType.STRING)
     private StudentStatus status;
     private Long monthlyLessons;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users user;
 }
