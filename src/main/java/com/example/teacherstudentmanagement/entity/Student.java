@@ -3,15 +3,18 @@ package com.example.teacherstudentmanagement.entity;
 import com.example.teacherstudentmanagement.enums.StudentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-@Data
 @Entity
-@Table
+@Data
+@ToString
+@NoArgsConstructor
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +28,6 @@ public class Student {
 
     private Integer remainingLessons;
     private LocalDateTime startDate;
-    //private Date endDate;
 
     @Enumerated(EnumType.STRING)
     private StudentStatus status;
@@ -34,4 +36,8 @@ public class Student {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users user;
+
+    public Student(Long id) {
+        this.id = id;
+    }
 }

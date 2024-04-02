@@ -14,8 +14,7 @@ public class MySecPaths {
 
             "/auth/**",
             "/teacher/register",
-            "/groups/new",
-            "/groups/add-student",
+
     };
 
     static String[] adminPaths = {
@@ -23,13 +22,16 @@ public class MySecPaths {
     };
 
     static String[] teacherPaths = {
-        "/teacher/test"
+            "/teacher/test",
+            "/groups/new",
+            "/groups/add-student",
 
     };
 
     static String[] studentPaths = {
             "/student/add",
-            "/student/{studentId}/add-group"
+            "/payment/add",
+            "/rating/add",
 
     };
 
