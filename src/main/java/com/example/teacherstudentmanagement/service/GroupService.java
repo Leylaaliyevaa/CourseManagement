@@ -3,12 +3,16 @@ package com.example.teacherstudentmanagement.service;
 import com.example.teacherstudentmanagement.dto.request.GroupRequestDTO;
 import com.example.teacherstudentmanagement.dto.request.GroupStudentRequestDTO;
 import com.example.teacherstudentmanagement.dto.response.GroupDTO;
-import com.example.teacherstudentmanagement.entity.Group;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface GroupService {
-    GroupDTO createGroup(GroupRequestDTO groupRequestDTO);
+    GroupDTO add(GroupRequestDTO groupRequestDTO);
 
-    void addStudentToGroup(GroupStudentRequestDTO groupStudentRequestDTO);
+    void addStudent(GroupStudentRequestDTO groupStudentRequestDTO);
+     List<GroupDTO> showGroups();
+    void delete(Long teacherId);
+
 }

@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -22,8 +25,9 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final StudentRepository studentRepository;
     private final JwtUtil jwtUtil;
+
     @Transactional
-    public void addPayment(HttpServletRequest request, PaymentRequestDTO paymentRequestDTO) {
+    public void add(HttpServletRequest request, PaymentRequestDTO paymentRequestDTO) {
         Integer userId = jwtUtil.getUserId(jwtUtil.resolveClaims(request));
         log.info("Payment add method started by userId: {}", userId);
         Long studentId = studentRepository.findByUserId(Long.valueOf(userId)).getId();
@@ -31,5 +35,28 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = paymentMapper.toPayment(paymentRequestDTO);
         payment.setStudent(new Student(studentId));
         paymentRepository.save(payment);
+        log.info("Payment add method done");
+
     }
+
+    @Override
+    public List<PaymentRequestDTO> getAll() {
+        log.info("Show all payment method started");
+        List<Payment> payments = paymentRepository.findAll();
+        List<PaymentRequestDTO> paymentDTOs = payments.stream()
+                .map(paymentMapper::toDTO)
+                .collect(Collectors.toList());
+        log.info("Found {} payment", payments.size());
+        return paymentDTOs;
+    }
+
+    @Override
+    public List<PaymentRequestDTO> byStudentId(Long studentId) {
+        log.info("Show payment by student id method started");
+        List<Payment> payments = paymentRepository.findByStudentId(studentId);
+        List<PaymentRequestDTO> paymentRequestDTOS = paymentMapper.toDTOList(payments);
+        log.info("Payment show method done for student ID: {} ", studentId);
+        return paymentRequestDTOS;
+    }
+
 }

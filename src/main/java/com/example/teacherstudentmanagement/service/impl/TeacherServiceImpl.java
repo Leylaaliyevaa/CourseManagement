@@ -1,6 +1,7 @@
 package com.example.teacherstudentmanagement.service.impl;
 
 import com.example.teacherstudentmanagement.dto.request.TeacherRequestDto;
+import com.example.teacherstudentmanagement.dto.request.TeacherUpdateDTO;
 import com.example.teacherstudentmanagement.dto.response.TeacherDTO;
 import com.example.teacherstudentmanagement.entity.Authority;
 import com.example.teacherstudentmanagement.entity.Teacher;
@@ -8,12 +9,14 @@ import com.example.teacherstudentmanagement.entity.Users;
 import com.example.teacherstudentmanagement.enums.AuthorityEnum;
 import com.example.teacherstudentmanagement.enums.Subjects;
 import com.example.teacherstudentmanagement.exception.AlreadyExistException;
+import com.example.teacherstudentmanagement.exception.NotFoundException;
 import com.example.teacherstudentmanagement.mapper.TeacherMapper;
 import com.example.teacherstudentmanagement.mapper.UsersMapper;
 import com.example.teacherstudentmanagement.repository.RatingRepository;
 import com.example.teacherstudentmanagement.repository.TeacherRepository;
 import com.example.teacherstudentmanagement.repository.UsersRepository;
 import com.example.teacherstudentmanagement.service.TeacherService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,9 +59,9 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<TeacherDTO> showTeacherBySubjects(Subjects subject) {
-         List<Teacher> teacher = teacherRepository.findBySubjects(subject);
-
+    public List<TeacherDTO> showBySubjects(Subjects subject) {
+        log.info("Show teacher method started");
+        List<Teacher> teacher = teacherRepository.findBySubjects(subject);
         List<TeacherDTO> teacherDTOS = new ArrayList<>();
         for (Teacher t : teacher) {
             TeacherDTO teacherDTO = teacherMapper.toDTO(t);
@@ -71,5 +74,28 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherDTOS;
     }
 
+    @Override
+    public void delete(Long id) {
+        log.info("Delete teacher method started");
+        teacherRepository.deleteById(id);
+        log.info("Delete teacher method done");
+    }
 
+    @Override
+    public List<TeacherDTO> getAll() {
+        log.info("Show all teachers method started");
+        List<Teacher> teachers = teacherRepository.findAll();
+        List<TeacherDTO> teacherDTOS = new ArrayList<>();
+            for (Teacher teacher : teachers){
+                TeacherDTO teacherDTO = teacherMapper.toDTO(teacher);
+                Double avgRating = ratingRepository.findAverageRatingByTeacherId(teacher.getId());
+                teacherDTO.setRating(avgRating);
+                teacherDTOS.add(teacherDTO);
+            }
+        log.info("Found {} teachers", teachers.size());
+        return teacherDTOS;
+    }
 }
+
+
+

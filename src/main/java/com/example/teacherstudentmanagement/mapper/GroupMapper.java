@@ -21,6 +21,9 @@ public interface GroupMapper {
 
     @Mapping(target = "id", source = "groupId")
     Group toGroup(GroupStudentRequestDTO groupStudentRequestDTO);
+    @Mapping(target = "id", source = "id")
+    GroupDTO toGroupDTO(Group group);
+
 }
 
 

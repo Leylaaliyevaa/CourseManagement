@@ -34,7 +34,7 @@ public class TeacherRequestDto {
 
     @Email
     @NotBlank(message = "Email cannot be empty or null")
-    @Size(max = 25)
+    @Size(max = 30)
     private String email;
 
     @NotBlank(message = "Phone can not be empty or null")

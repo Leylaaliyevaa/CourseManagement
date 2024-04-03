@@ -13,32 +13,42 @@ public class MySecPaths {
             "/swagger-ui.html",
 
             "/auth/**",
+            "/rating/all",
+            "/students/register",
             "/teacher/register",
             "/teacher/subjects/{subject}",
+            "/teacher/all"
 
     };
 
     static String[] adminPaths = {
-
+            "/payment/all",
+            "/payment/student/{studentId}",
+            "/students/delete/{id}",
+            "/teacher/delete/{id}",
+            "/students/status",
+            "/students/byStatus",
     };
 
     static String[] teacherPaths = {
-            "/teacher/test",
             "/groups/new",
             "/groups/add-student",
-
+            "/groups/show",
+            "/groups/delete/{groupId}",
+            "/rating/delete/{id}",
+            "/students/all",
+            "/students/journal",
     };
 
     static String[] studentPaths = {
-            "/student/add",
-            "/payment/add",
-            "/rating/add",
-
+            "/payment/new",
+            "/rating/new",
     };
 
 
     static String[] anyAuthenticatedPaths = {
-
+            "/users/password",
+            "/users/edit"
 
     };
 }
